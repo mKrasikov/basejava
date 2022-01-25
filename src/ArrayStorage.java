@@ -6,20 +6,20 @@ public class ArrayStorage {
     int size = 0;
 
     void clear() {
-        for (int i = 0; i < size(); i++) {
+        for (int i = 0; i < size; i++) {
             storage[i] = null;
         }
+        size = 0;
         System.out.println("Now resumes no.");
     }
 
     void save(Resume r) {
-                storage[size] = r;
-                System.out.println("Resume " + r + " is save.");
-                size++;
+        storage[size] = r;
+        System.out.println("Resume " + r + " is save.");
+        size++;
     }
 
     Resume get(String uuid) {
-
         for (int i = 0; i < size; i++) {
             if (storage[i].uuid.equals(uuid)) {
                 System.out.println("Resume " + uuid + " is found.");
@@ -33,8 +33,8 @@ public class ArrayStorage {
         for (int i = 0; i < size; i++) {
             if (storage[i].uuid.equals(uuid)) {
                 System.out.println("Resume " + uuid + " is delete.");
-                for (int j = i + 1; j <= size; j++) {
-                    storage[i] = storage[j];
+                for (int j = i; j < size - 1; j++) {
+                    storage[j] = storage[j + 1];
                     i++;
                 }
                 size--;
@@ -48,21 +48,14 @@ public class ArrayStorage {
      */
     Resume[] getAll() {
         System.out.println("List of resumes:");
-        Resume[] resumes = new Resume[size()];
-        for (int i = 0; i < size(); i++) {
+        Resume[] resumes = new Resume[size];
+        for (int i = 0; i < size; i++) {
             resumes[i] = storage[i];
         }
         return resumes;
     }
 
     int size() {
-        int sizeOfStorage = 0;
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                sizeOfStorage = i + 1;
-            }
-        }
-
-        return sizeOfStorage;
+        return size;
     }
 }
