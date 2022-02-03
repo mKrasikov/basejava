@@ -4,7 +4,6 @@ import ru.javaops.webapp.model.Resume;
 
 import java.util.Arrays;
 
-
 /**
  * Array based storage for Resumes
  */
@@ -12,7 +11,7 @@ public class ArrayStorage {
     private Resume[] storage = new Resume[10000];
     private int size = 0;
 
-    public int check(String uuid) {
+    private int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
@@ -28,7 +27,8 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (check(r.getUuid()) == -1) {
+        int index = findIndex(r.getUuid());
+        if (index == -1) {
             System.out.println("The resume \"" + r + "\" is save.");
             storage[size] = r;
             size++;
@@ -40,33 +40,33 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        if (check(r.getUuid()) != -1) {
+        int index = findIndex(r.getUuid());
+        if (index != -1) {
             System.out.println("The resume \"" + r + "\" is update.");
-            storage[check(r.getUuid())] = r;
+            storage[index] = r;
         } else {
             System.out.println("There is no \"" + r + "\" resume.");
         }
     }
 
     public Resume get(String uuid) {
-        if (check(uuid) != -1) {
+        int index = findIndex(uuid);
+        if (index != -1) {
             System.out.println("Resume \"" + uuid + "\" is found.");
-            return storage[check(uuid)];
-        } else {
-            System.out.println("There is no \"" + uuid + "\" such resume.");
+            return storage[index];
         }
+        System.out.println("There is no \"" + uuid + "\" such resume.");
         return null;
     }
 
     public void delete(String uuid) {
-        int i = check(uuid);
+        int index = findIndex(uuid);
         Resume[] resumes = new Resume[10000];
-        if (check(uuid) != -1) {
+        if (index != -1) {
             System.out.println("Resume \"" + uuid + "\" is removed.");
-            System.arraycopy(storage, 0, resumes, 0, i);
-            System.arraycopy(storage, i + 1, resumes, i, storage.length - (i + 1));
+            System.arraycopy(storage, 0, storage, 0, index);
+            System.arraycopy(storage, index + 1, storage, index, storage.length - (index + 1));
             size--;
-            storage = resumes;
         } else {
             System.out.println("There is no \"" + uuid + "\" such resume.");
         }
