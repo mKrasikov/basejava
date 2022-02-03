@@ -11,26 +11,14 @@ import java.util.Arrays;
 public class ArrayStorage {
     private Resume[] storage = new Resume[10000];
     private int size = 0;
-    private boolean check = false;
 
-    public void checkResume(Resume r) {
-        check = false;
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(r.getUuid())) {
-                check = true;
-                break;
-            }
-        }
-    }
-
-    public void checkString(String uuid) {
-        check = false;
+    public int check(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
-                check = true;
-                break;
+                return i;
             }
         }
+        return -1;
     }
 
     public void clear() {
@@ -39,44 +27,31 @@ public class ArrayStorage {
         System.out.println("There are no resumes now.");
     }
 
-
     public void save(Resume r) {
-        checkResume(r);
-        if (check) {
-            System.out.println("The resume \"" + r + "\" is already exists.");
-        } else if (size + 1 < storage.length) {
+        if (check(r.getUuid()) == -1) {
             System.out.println("The resume \"" + r + "\" is save.");
             storage[size] = r;
             size++;
+        } else if (size == storage.length) {
+            System.out.println("The storage is full.");
         } else {
-            System.out.println("The storage is fool.");
+            System.out.println("The resume \"" + r + "\" is already exists.");
         }
     }
 
     public void update(Resume r) {
-        checkResume(r);
-        if (check) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i] == r) {
-                    System.out.println("The resume \"" + r + "\" is update.");
-                    storage[i] = r;
-                    break;
-                }
-            }
+        if (check(r.getUuid()) != -1) {
+            System.out.println("The resume \"" + r + "\" is update.");
+            storage[check(r.getUuid())] = r;
         } else {
             System.out.println("There is no \"" + r + "\" resume.");
         }
     }
 
     public Resume get(String uuid) {
-        checkString(uuid);
-        if (check) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    System.out.println("Resume \"" + uuid + "\" is found.");
-                    return storage[i];
-                }
-            }
+        if (check(uuid) != -1) {
+            System.out.println("Resume \"" + uuid + "\" is found.");
+            return storage[check(uuid)];
         } else {
             System.out.println("There is no \"" + uuid + "\" such resume.");
         }
@@ -84,19 +59,14 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        checkString(uuid);
-        if (check) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    System.out.println("Resume \"" + uuid + "\" is delete.");
-                    for (int j = i; j < size - 1; j++) {
-                        storage[j] = storage[j + 1];
-                        i++;
-                    }
-                    size--;
-                    storage[size] = null;
-                }
-            }
+        int i = check(uuid);
+        Resume[] resumes = new Resume[10000];
+        if (check(uuid) != -1) {
+            System.out.println("Resume \"" + uuid + "\" is removed.");
+            System.arraycopy(storage, 0, resumes, 0, i);
+            System.arraycopy(storage, i + 1, resumes, i, storage.length - (i + 1));
+            size--;
+            storage = resumes;
         } else {
             System.out.println("There is no \"" + uuid + "\" such resume.");
         }
