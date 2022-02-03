@@ -32,8 +32,8 @@ public class MainTestArrayStorage {
 
         r2.setUuid("uuid4");
         ARRAY_STORAGE.update(r2);
-
         printAll();
+
         ARRAY_STORAGE.clear();
         printAll();
 
