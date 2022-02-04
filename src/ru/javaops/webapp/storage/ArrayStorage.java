@@ -28,12 +28,12 @@ public class ArrayStorage {
 
     public void save(Resume r) {
         int index = findIndex(r.getUuid());
-        if (index == -1) {
-            System.out.println("The resume \"" + r + "\" is save.");
-            storage[size] = r;
-            size++;
-        } else if (size == storage.length) {
+        if (size == storage.length) {
             System.out.println("The storage is full.");
+        } else if (index == -1) {
+            storage[size] = r;
+            System.out.println("The resume \"" + r + "\" is save.");
+            size++;
         } else {
             System.out.println("The resume \"" + r + "\" is already exists.");
         }
@@ -42,8 +42,8 @@ public class ArrayStorage {
     public void update(Resume r) {
         int index = findIndex(r.getUuid());
         if (index != -1) {
-            System.out.println("The resume \"" + r + "\" is update.");
             storage[index] = r;
+            System.out.println("The resume \"" + r + "\" is update.");
         } else {
             System.out.println("There is no \"" + r + "\" resume.");
         }
@@ -61,11 +61,9 @@ public class ArrayStorage {
 
     public void delete(String uuid) {
         int index = findIndex(uuid);
-        Resume[] resumes = new Resume[10000];
         if (index != -1) {
-            System.out.println("Resume \"" + uuid + "\" is removed.");
-            System.arraycopy(storage, 0, storage, 0, index);
             System.arraycopy(storage, index + 1, storage, index, storage.length - (index + 1));
+            System.out.println("Resume \"" + uuid + "\" is removed.");
             size--;
         } else {
             System.out.println("There is no \"" + uuid + "\" such resume.");
