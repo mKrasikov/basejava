@@ -48,7 +48,6 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index < 0) {
             System.out.println("There is no \"" + uuid + "\" such resume.");
             return null;
-
         }
         System.out.println("Resume \"" + uuid + "\" is found.");
         return storage[index];
@@ -58,7 +57,6 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = getIndex(uuid);
         if (index < 0) {
             System.out.println("There is no \"" + uuid + "\" such resume.");
-
         } else {
             fillDeletedElement(index);
             System.out.println("Resume \"" + uuid + "\" is removed.");
